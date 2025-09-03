@@ -1,0 +1,84 @@
+Users (
+    id bigserial primary key,
+    name varchar(100) not null,
+    email varchar(140) not null unique,
+    role ENUM('user','admin','driver','superadmin'),
+    password_hash varchar(255) not null,
+    created_at timestamp default now()
+);
+
+Restaurants (
+    id bigserial primary key,
+    name varchar(200) not null,
+    address varchar(160) not null,
+    owner bigint not null references Users(id)
+);
+
+Categories (
+    id bigserial primary key,
+    name varchar(100) not null,
+    restaurant_id bigint not null references Restaurants(id)
+);
+
+Menu_Items (
+    id bigserial primary key,
+    name varchar(200) not null,
+    image_url text
+);
+
+Restaurant_Menu (
+    id bigserial primary key,
+    restaurant_id bigint not null references Restaurants(id),
+    menu_item_id bigint not null references Menu_Items(id),
+    category_id bigint references Categories(id),
+    price numeric(10,2) not null,
+    availability ENUM('AVAILABLE','OUT_OF_STOCK') not null default 'AVAILABLE'
+);
+
+Orders (
+    id bigserial primary key,
+    restaurant_id bigint not null references Restaurants(id),
+    user_id bigint not null references Users(id),
+    ordered_at timestamp default now(),
+    order_status ENUM('PENDING','PREPARING','PICKED_UP','ON_THE_WAY','DELIVERED','REJECTED'),
+    total_price numeric(10,2) not null
+);
+
+Order_Items (
+    id bigserial primary key,
+    order_id bigint not null references Orders(id),
+    restaurant_menu_id bigint not null references Restaurant_Menu(id), -- ✅ FIX
+    quantity int not null,
+    unit_price numeric(10,2) not null
+);
+
+Drivers (
+    id bigserial primary key,
+    user_id bigint not null unique references Users(id),
+    availability ENUM('ONLINE','OFFLINE') not null default 'OFFLINE'
+);
+
+Approval_Requests (
+    id bigserial primary key,
+    requester_id bigint not null references Users(id),
+    request_type ENUM('RESTAURANT_ADMIN','DRIVER'),
+    approval_status ENUM('PENDING','APPROVED','REJECTED'),
+    payload_json jsonb,
+    created_at timestamp default now()
+);
+
+Delivery_Assignments (
+    id bigserial primary key,
+    order_id bigint not null unique references Orders(id), -- ✅ enforce one assignment per order
+    driver_id bigint not null references Drivers(id),
+    assigned_at timestamp default now()
+);
+
+Notifications (
+    id bigserial primary key,
+    user_id bigint not null references Users(id),
+    message text not null,
+    type varchar(100),
+    created_at timestamp default now(),
+    read boolean default false
+);
