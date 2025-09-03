@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/food_delivery
+    username: vamsi
+    password: vamsi
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+
+jwt:
+  secret: ${JWT_SECRET:hi}
+
+  expiryMinutes: 60
