@@ -1,3 +1,24 @@
+Restaurants Many to 1 Users
+
+Categories Many to 1 Restaurants
+
+Restaurant_Menu Many to 1 Restaurants
+Restaurant_Menu Many to 1 Menu_Items
+
+Orders Many to One Users
+Orders Many to One Restaurants
+
+Order_Items Many to One Orders
+Order_Items Many to One Restaurant_Menu
+
+Drivers 1 to 1 Users
+
+Approval_Requests Many to 1 Users
+
+Delivery_Assignments Many to 1 Drivers
+
+Notifications Many to 1 Users
+
 Users (
     id bigserial primary key,
     name varchar(100) not null,
@@ -22,7 +43,7 @@ Categories (
 
 Menu_Items (
     id bigserial primary key,
-    name varchar(200) not null,
+    name varchar(100) not null,
     image_url text
 );
 
