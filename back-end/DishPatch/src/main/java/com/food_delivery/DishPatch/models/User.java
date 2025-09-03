@@ -2,12 +2,11 @@ package com.food_delivery.DishPatch.models;
 
 import jakarta.persistence.*;
 
-import javax.annotation.processing.Generated;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,10 +14,10 @@ public class Users {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false, length = 200, unique = true)
+    @Column(nullable = false, length = 140, unique = true)
     private String email;
 
-    public static enum Role {user, admin, driver, superadmin};
+    public static enum Role {USER, ADMIN, DRIVER, SUPERADMIN};
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -27,7 +26,19 @@ public class Users {
     private String passwordHash;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    public User() {
+    }
+
+    public User(Long id, String name, String email, Role role, String passwordHash, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.passwordHash = passwordHash;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
