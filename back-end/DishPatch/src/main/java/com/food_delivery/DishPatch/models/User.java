@@ -20,7 +20,7 @@ public class User {
     public static enum Role {USER, ADMIN, DRIVER, SUPERADMIN};
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
@@ -72,12 +72,12 @@ public class User {
         this.role = role;
     }
 
-    public String getPassword_hash() {
+    public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.passwordHash = password_hash;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public LocalDateTime getCreatedAt() {

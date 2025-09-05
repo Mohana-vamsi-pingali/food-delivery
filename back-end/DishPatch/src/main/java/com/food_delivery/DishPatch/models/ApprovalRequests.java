@@ -1,5 +1,6 @@
 package com.food_delivery.DishPatch.models;
 
+import com.food_delivery.DishPatch.utils.JpaJsonConverter;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
