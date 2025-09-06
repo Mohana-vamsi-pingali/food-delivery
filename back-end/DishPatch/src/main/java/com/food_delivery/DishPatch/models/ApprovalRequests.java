@@ -2,6 +2,8 @@ package com.food_delivery.DishPatch.models;
 
 import com.food_delivery.DishPatch.utils.JpaJsonConverter;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -13,9 +15,8 @@ public class ApprovalRequests {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "requester_id", nullable = false)
-    private User user;
+    @Column(nullable = false, length = 140)
+    private String email;
 
     public static enum RequestType {RESTAURANT_ADMIN, DRIVER};
 
@@ -29,8 +30,8 @@ public class ApprovalRequests {
     @Column(name="approval_status", nullable = false)
     private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "payload_json", columnDefinition = "jsonb")
-    @Convert(converter = JpaJsonConverter.class)
     private Map<String, Object> payloadJson;
 
     @Column(name = "created_at", nullable = false)
@@ -39,18 +40,16 @@ public class ApprovalRequests {
     public ApprovalRequests() {
     }
 
-    public ApprovalRequests(Long id, User user, RequestType requestType, ApprovalStatus approvalStatus, Map<String, Object> payloadJson, LocalDateTime createdAt) {
+    public ApprovalRequests(Long id, RequestType requestType, ApprovalStatus approvalStatus, Map<String, Object> payloadJson, LocalDateTime createdAt) {
         this.id = id;
-        this.user = user;
         this.requestType = requestType;
         this.approvalStatus = approvalStatus;
         this.payloadJson = payloadJson;
         this.createdAt = createdAt;
     }
 
-    public ApprovalRequests(Long id, User user, RequestType requestType, ApprovalStatus approvalStatus, Map<String, Object> payloadJson) {
+    public ApprovalRequests(Long id, RequestType requestType, ApprovalStatus approvalStatus, Map<String, Object> payloadJson) {
         this.id = id;
-        this.user = user;
         this.requestType = requestType;
         this.approvalStatus = approvalStatus;
         this.payloadJson = payloadJson;
@@ -62,14 +61,6 @@ public class ApprovalRequests {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public RequestType getRequestType() {
@@ -94,6 +85,14 @@ public class ApprovalRequests {
 
     public void setPayloadJson(Map<String, Object> payloadJson) {
         this.payloadJson = payloadJson;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getCreatedAt() {
