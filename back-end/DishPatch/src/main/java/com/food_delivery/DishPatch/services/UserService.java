@@ -49,7 +49,7 @@ public class UserService {
         else {
             boolean isCorrect = passwordEncoder.matches(user.getPassword(), requestedUser.get().getPasswordHash());
             if(isCorrect){
-                return "Log-in successful";
+                return requestedUser.get().getRole().name();
             }
             else {
                 throw new InvalidPasswordException("Invalid Credentials");
