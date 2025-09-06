@@ -15,6 +15,5 @@ spring:
     show-sql: true
 
 jwt:
-  secret: ${JWT_SECRET:hi}
-
+  secret: my-very-strong-secret-key-for-dishpatch
   expiryMinutes: 60

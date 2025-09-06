@@ -8,6 +8,7 @@ import com.food_delivery.DishPatch.Exceptions.InvalidPasswordException;
 import com.food_delivery.DishPatch.Exceptions.UserNotFoundException;
 import com.food_delivery.DishPatch.models.User;
 import com.food_delivery.DishPatch.repositories.UserRepository;
+import com.food_delivery.DishPatch.security.JwtUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
     }
 
     public UserResponseDTO createUser(UserDTO user){
@@ -49,7 +52,8 @@ public class UserService {
         else {
             boolean isCorrect = passwordEncoder.matches(user.getPassword(), requestedUser.get().getPasswordHash());
             if(isCorrect){
-                return requestedUser.get().getRole().name();
+                User u = requestedUser.get();
+                return jwtUtils.generateToken(u.getId(), u.getRole().name());
             }
             else {
                 throw new InvalidPasswordException("Invalid Credentials");

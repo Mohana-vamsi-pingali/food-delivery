@@ -36,7 +36,7 @@ public class UserController {
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserLoginDTO user){
         String response = userService.loginUser(user);
         Map<String, String> body = new HashMap<>();
-        body.put("role", response);
+        body.put("jwt", response);
         return ResponseEntity.ok().body(body);
     }
 }

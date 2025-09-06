@@ -26,14 +26,6 @@ public class ApprovalRequestsDTO {
         this.role = role;
     }
 
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
-
     public String getName() {
         return name;
     }
