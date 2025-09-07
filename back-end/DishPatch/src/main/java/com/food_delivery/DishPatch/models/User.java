@@ -17,7 +17,7 @@ public class User {
     @Column(nullable = false, length = 140, unique = true)
     private String email;
 
-    public static enum Role {USER, ADMIN, DRIVER, SUPERADMIN};
+    public static enum Role {USER, RESTAURANT_ADMIN, DRIVER, SUPERADMIN};
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;

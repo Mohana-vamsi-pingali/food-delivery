@@ -7,8 +7,6 @@ public class ApprovalRequestsDTO {
     @NotNull(message = "Name Should not be null")
     private String name;
 
-    private String restaurantName;
-
     @NotNull(message = "Name Should not be null")
     @Email(message = "Invalid Email Format")
     private String email;
@@ -17,6 +15,17 @@ public class ApprovalRequestsDTO {
 
     @NotNull(message = "Role Should not be null")
     private String role;
+
+    @NotNull(message = "Address cannot be null")
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getRole() {
         return role;
@@ -32,14 +41,6 @@ public class ApprovalRequestsDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getRestaurantName() {
-        return restaurantName;
-    }
-
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
     }
 
     public String getEmail() {
