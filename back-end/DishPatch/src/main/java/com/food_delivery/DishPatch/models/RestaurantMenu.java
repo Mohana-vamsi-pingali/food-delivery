@@ -32,16 +32,28 @@ public class RestaurantMenu {
     @Column(name = "availability", nullable = false)
     private Availability availability = Availability.AVAILABLE;
 
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public RestaurantMenu() {
     }
 
-    public RestaurantMenu(Long id, Restaurant restaurant, MenuItem menuitem, Category category, BigDecimal price, Availability availability) {
+    public RestaurantMenu(Long id, Restaurant restaurant, MenuItem menuitem, Category category, BigDecimal price, Availability availability, String imageUrl) {
         this.id = id;
         this.restaurant = restaurant;
         this.menuitem = menuitem;
         this.category = category;
         this.price = price;
         this.availability = availability;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {

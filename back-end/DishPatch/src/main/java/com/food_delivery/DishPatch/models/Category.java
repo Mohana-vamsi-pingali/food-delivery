@@ -9,20 +9,15 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(unique = true, nullable = false, length = 100)
     private String name;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
 
     public Category() {
     }
 
-    public Category(Long id, String name, Restaurant restaurant) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.restaurant = restaurant;
     }
 
     public Long getId() {
@@ -39,13 +34,5 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 }

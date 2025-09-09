@@ -9,19 +9,15 @@ public class MenuItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
     private String name;
-
-    @Column(name = "image_url", columnDefinition = "TEXT")
-    private String imageUrl;
 
     public MenuItem() {
     }
 
-    public MenuItem(Long id, String name, String imageUrl) {
+    public MenuItem(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
@@ -38,13 +34,5 @@ public class MenuItem {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }
