@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/food_delivery
-    username: vamsi
-    password: vamsi
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,7 +13,28 @@ spring:
     properties:
       hibernate.format_sql: true
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
 
 jwt:
-  secret: my-very-strong-secret-key-for-dishpatch
+  secret: ${JWT_SECRET}
   expiryMinutes: 60
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region:
+      static: ${AWS_REGION}
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: ${AWS_BUCKET}
+

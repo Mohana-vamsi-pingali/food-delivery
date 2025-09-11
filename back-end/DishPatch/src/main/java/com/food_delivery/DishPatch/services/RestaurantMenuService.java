@@ -50,26 +50,17 @@ public class RestaurantMenuService {
         RestaurantMenu newItem = new RestaurantMenu();
         try {
             Restaurant restaurant = restaurantService.getRestaurant(dto.getRestaurantId());
-            newItem.setRestaurant(restaurant);
-            MenuItem menuItem;
-            Category category;
 
-            try {
-                 menuItem = menuItemService.getMenuItem(dto.getItemName());
-            }
-            catch (IllegalArgumentException e){
-                menuItem = menuItemService.addMenuItemInternal(dto.getItemName());
-            }
+            MenuItem menuItem = menuItemService.getMenuItem(dto.getItemName())
+                    .orElseGet(() -> menuItemService.addMenuItemInternal(dto.getItemName()));
 
-            newItem.setMenuitem(menuItem);
+            Category category = categoryService.getCategory(dto.getCategoryName())
+                    .orElseGet(() -> categoryService.addCategoryInternal(dto.getCategoryName()));
+
             String fileName = restaurant.getId()+"_"+menuItem.getName();
 
-            try {
-                category = categoryService.getCategory(dto.getCategoryName());
-            }
-            catch (IllegalArgumentException e){
-                category = categoryService.addCategoryInternal(dto.getCategoryName());
-            }
+            newItem.setRestaurant(restaurant);
+            newItem.setMenuitem(menuItem);
             newItem.setCategory(category);
             newItem.setPrice(dto.getPrice());
             if(dto.getAvailability()!=null)
@@ -81,11 +72,11 @@ public class RestaurantMenuService {
             catch (Exception e){
                 throw new FileSystemException("Cannot Upload File to the DB");
             }
-            restaurantMenuRepository.save(newItem);
         }
         catch (Exception e){
             throw new IllegalArgumentException("Cannot Create Restaurant Menu Item");
         }
+        restaurantMenuRepository.save(newItem);
         return "Successfully Created";
     }
 

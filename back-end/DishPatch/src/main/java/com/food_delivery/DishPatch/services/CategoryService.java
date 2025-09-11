@@ -4,6 +4,8 @@ import com.food_delivery.DishPatch.models.Category;
 import com.food_delivery.DishPatch.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
@@ -12,8 +14,8 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category getCategory(String name){
-        return categoryRepository.findByName(name).orElseThrow(()-> new IllegalArgumentException("Cannot Find Category"));
+    public Optional<Category> getCategory(String name){
+        return Optional.of(categoryRepository.findByName(name).orElseThrow(()-> new IllegalArgumentException("Cannot Find Category")));
     }
 
     public Category addCategoryInternal(String name){
