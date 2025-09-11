@@ -12,6 +12,21 @@ public class MenuItemService {
         this.menuItemRepository = menuItemRepository;
     }
 
+    public MenuItem getMenuItem(String name){
+        return menuItemRepository.findByName(name).orElseThrow(()->new IllegalArgumentException("Cannot Find Menu Item"));
+    }
+
+    public MenuItem addMenuItemInternal(String item){
+        MenuItem menuItem = new MenuItem();
+        menuItem.setName(item);
+
+        try {
+            return menuItemRepository.save(menuItem);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
     public String addMenuItem(String item){
         MenuItem menuItem = new MenuItem();
         menuItem.setName(item);

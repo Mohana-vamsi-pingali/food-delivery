@@ -12,6 +12,20 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    public Category getCategory(String name){
+        return categoryRepository.findByName(name).orElseThrow(()-> new IllegalArgumentException("Cannot Find Category"));
+    }
+
+    public Category addCategoryInternal(String name){
+        Category newCategory = new Category();
+        newCategory.setName(name);
+        try {
+            return categoryRepository.save(newCategory);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Cannot Create a new Category");
+        }
+    }
+
     public String addCategory(String name){
         Category newCategory = new Category();
         newCategory.setName(name);

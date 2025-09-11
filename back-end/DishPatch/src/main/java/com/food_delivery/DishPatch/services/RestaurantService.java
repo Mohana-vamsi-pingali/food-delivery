@@ -13,6 +13,10 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
+    public Restaurant getRestaurant(Long id){
+        return restaurantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot FInd Restaurant"));
+    }
+
     public void createRestaurant(RestaurantDTO restaurantDetails){
         Restaurant restaurant = new Restaurant();
         restaurant.setName(restaurantDetails.getName());

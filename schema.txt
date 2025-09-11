@@ -38,7 +38,6 @@ Restaurants (
 Categories (
     id bigserial primary key,
     name varchar(100) not null,
-    restaurant_id bigint not null references Restaurants(id)
 );
 
 Menu_Items (
