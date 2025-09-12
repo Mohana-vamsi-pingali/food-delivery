@@ -1,5 +1,6 @@
 package com.food_delivery.DishPatch.DTOs;
 
+import com.food_delivery.DishPatch.models.RestaurantMenu;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -11,6 +12,34 @@ public class RestaurantMenuDTO {
     private BigDecimal price;
     private String availability;
     private MultipartFile imageFile;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    private String imageUrl;
+
+    public RestaurantMenuDTO(String itemName, String categoryName, BigDecimal price, String availability, String imageUrl) {
+        this.itemName = itemName;
+        this.categoryName = categoryName;
+        this.price = price;
+        this.availability = availability;
+        this.imageUrl = imageUrl;
+    }
+
+    public static RestaurantMenuDTO from(RestaurantMenu entity, String presignedUrl) {
+        return new RestaurantMenuDTO(
+                entity.getMenuitem().getName(),
+                entity.getCategory().getName(),
+                entity.getPrice(),
+                entity.getAvailability().toString(),
+                presignedUrl
+        );
+    }
 
     public String getItemName() {
         return itemName;
@@ -62,4 +91,6 @@ public class RestaurantMenuDTO {
     public void setAvailability(String availability) {
         this.availability = availability;
     }
+
+
 }
