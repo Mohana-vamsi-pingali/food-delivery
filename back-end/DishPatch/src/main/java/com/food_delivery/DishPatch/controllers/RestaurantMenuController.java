@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("restaurant-menu")
 public class RestaurantMenuController {
@@ -24,4 +26,10 @@ public class RestaurantMenuController {
         RestaurantMenuDTO dto = restaurantMenuService.getMenuItem(restaurantId, menuItemId);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("{restaurantId}/categories/{categoryId}/items")
+    public ResponseEntity<List<RestaurantMenuDTO>> getAllItemsByCategory(@PathVariable Long restaurantId, @PathVariable Long categoryId){
+        return ResponseEntity.ok().body(restaurantMenuService.getAllMenuItemsByCategory(restaurantId, categoryId));
+    }
+
 }

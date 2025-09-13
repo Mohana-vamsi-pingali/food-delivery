@@ -27,7 +27,9 @@ import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.FileSystemException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RestaurantMenuService {
@@ -136,5 +138,19 @@ public class RestaurantMenuService {
         String presignedUrl = generatePresignedUrl(item.getImageUrl());
 
         return RestaurantMenuDTO.from(item, presignedUrl);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RestaurantMenuDTO> getAllMenuItemsByCategory(Long restaurantId, Long categoryId){
+       List<RestaurantMenu> allList = new ArrayList<RestaurantMenu>();
+       allList = restaurantMenuRepository.findByRestaurantIdAndCategoryId(restaurantId, categoryId).orElseThrow(()->new IllegalArgumentException("Cannot Find Menu Items"));
+
+       return allList
+               .stream()
+               .map(item -> {
+                   String presignedUrl = generatePresignedUrl(item.getImageUrl());
+                   return RestaurantMenuDTO.from(item, presignedUrl);
+               })
+               .toList();
     }
 }
