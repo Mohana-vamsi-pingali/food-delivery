@@ -3,6 +3,7 @@ package com.food_delivery.DishPatch.controllers;
 import com.amazonaws.Response;
 import com.food_delivery.DishPatch.DTOs.RestaurantMenuDTO;
 import com.food_delivery.DishPatch.Response.ApiResponse;
+import com.food_delivery.DishPatch.security.AuthUtils;
 import com.food_delivery.DishPatch.services.RestaurantMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,15 @@ import java.util.List;
 public class RestaurantMenuController {
     @Autowired
     private RestaurantMenuService restaurantMenuService;
+    @Autowired
+    private final AuthUtils authUtils = new AuthUtils();
     @PostMapping("add")
     public ResponseEntity<ApiResponse> addMenuItem(RestaurantMenuDTO dto){
-        String msg = restaurantMenuService.addMenuItem(dto);
-        return ResponseEntity.ok().body(new ApiResponse(msg));
+        if(authUtils.hasRole("RESTAURANT_ADMIN")) {
+            String msg = restaurantMenuService.addMenuItem(dto);
+            return ResponseEntity.ok().body(new ApiResponse(msg));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse("Unauthorized"));
     }
 
     @GetMapping("{restaurantId}/items/{menuItemId}")

@@ -2,8 +2,11 @@ package com.food_delivery.DishPatch.services;
 
 import com.food_delivery.DishPatch.DTOs.RestaurantDTO;
 import com.food_delivery.DishPatch.models.Restaurant;
+import com.food_delivery.DishPatch.models.User;
 import com.food_delivery.DishPatch.repositories.RestaurantRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RestaurantService {
@@ -11,6 +14,11 @@ public class RestaurantService {
 
     public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
+    }
+
+    public Long getOwnerId(Long restaurantId){
+        User u =  restaurantRepository.findOwnerById(restaurantId);
+        return u.getId();
     }
 
     public Restaurant getRestaurant(Long id){

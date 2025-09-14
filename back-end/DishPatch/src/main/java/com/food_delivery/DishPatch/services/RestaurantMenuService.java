@@ -13,6 +13,7 @@ import com.food_delivery.DishPatch.models.MenuItem;
 import com.food_delivery.DishPatch.models.Restaurant;
 import com.food_delivery.DishPatch.models.RestaurantMenu;
 import com.food_delivery.DishPatch.repositories.RestaurantMenuRepository;
+import com.food_delivery.DishPatch.security.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class RestaurantMenuService {
     private final RestaurantService restaurantService;
     private final MenuItemService menuItemService;
     private final CategoryService categoryService;
+
+    @Autowired
+    private AuthUtils authUtils;
 
     @Value("${application.bucket.name}")
     private String bucketName;
@@ -81,6 +85,7 @@ public class RestaurantMenuService {
     }
 
     public String addMenuItem(RestaurantMenuDTO dto){
+        if(!authUtils.currentUserId().equals(restaurantService.getOwnerId(dto.getRestaurantId()))) throw new RuntimeException("Unauthorized");
         MenuItem menuItem = menuItemService.getMenuItem(dto.getItemName())
                 .orElseGet(() -> menuItemService.addMenuItemInternal(dto.getItemName()));
         if(restaurantMenuRepository.findByMenuitemIdAndRestaurantId(menuItem.getId(), dto.getRestaurantId()).isPresent()){
