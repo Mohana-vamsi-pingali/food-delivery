@@ -86,8 +86,13 @@ public class RestaurantMenuService {
 
     public String addMenuItem(RestaurantMenuDTO dto){
         if(!authUtils.currentUserId().equals(restaurantService.getOwnerId(dto.getRestaurantId()))) throw new RuntimeException("Unauthorized");
-        MenuItem menuItem = menuItemService.getMenuItem(dto.getItemName())
-                .orElseGet(() -> menuItemService.addMenuItemInternal(dto.getItemName()));
+        MenuItem menuItem;
+        try {
+            menuItem = menuItemService.getMenuItem(dto.getItemName()).get();
+        }
+        catch(IllegalArgumentException e) {
+            menuItem = menuItemService.addMenuItemInternal(dto.getItemName());
+        }
         if(restaurantMenuRepository.findByMenuitemIdAndRestaurantId(menuItem.getId(), dto.getRestaurantId()).isPresent()){
             throw new MenuItemAlreadyPresentException("Menu-Item Already Present. Cannot create new one.");
         }

@@ -11,12 +11,22 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public enum Status {OPEN, CHECKED_OUT, ABANDONED};
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status = Status.OPEN;
+
 
     public Cart() {
     }
@@ -49,5 +59,21 @@ public class Cart {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status cartStatus) {
+        this.status = cartStatus;
     }
 }
