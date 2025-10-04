@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -29,8 +31,20 @@ public class Order {
     @Column(name = "order_status")
     private OrderStatus orderStatus = OrderStatus.PENDING;
 
-    @Column(name = "total_price", precision = 10, scale = 2)
+    @Column(name = "subtotal", precision = 10, scale = 2, nullable = false)
+    private BigDecimal subtotal;
+
+    @Column(name = "tax", precision = 10, scale = 2, nullable = false)
+    private BigDecimal tax;
+
+    @Column(name = "delivery_fee", precision = 10, scale = 2, nullable = false)
+    private BigDecimal deliveryFee;
+
+    @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal totalPrice;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 
     public Order() {
     }
@@ -90,5 +104,37 @@ public class Order {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public BigDecimal getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    public void setDeliveryFee(BigDecimal deliveryFee) {
+        this.deliveryFee = deliveryFee;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 }

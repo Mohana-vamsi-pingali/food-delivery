@@ -14,9 +14,9 @@ public class CartController {
     @Autowired
     public CartService cartService;
     @PostMapping("/items")
-    public ResponseEntity<AddCartItemDTO> addItem(@RequestBody AddCartItemDTO dto){
-        AddCartItemDTO responseDTO = cartService.addCartItem(dto);
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<ApiResponse> addItem(@RequestBody AddCartItemDTO dto){
+        Long id = cartService.addCartItem(dto);
+        return ResponseEntity.ok(new ApiResponse(id+""));
     }
 
     @PostMapping("/items/update")

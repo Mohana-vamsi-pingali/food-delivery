@@ -25,6 +25,9 @@ public class OrderItem {
     @Column(name = "unit_price", precision = 10, scale = 2)
     private BigDecimal unitPrice;
 
+    @Column(name = "line_total", precision = 10, scale = 2)
+    private BigDecimal lineTotal;
+
     @PrePersist
     protected void prePersist() {
         if (this.unitPrice == null && restaurantMenu != null) {
@@ -33,14 +36,6 @@ public class OrderItem {
     }
 
     public OrderItem() {
-    }
-
-    public OrderItem(Long id, Order order, RestaurantMenu restaurantMenu, int quantity, BigDecimal unitPrice) {
-        this.id = id;
-        this.order = order;
-        this.restaurantMenu = restaurantMenu;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
     }
 
     public Long getId() {
@@ -81,5 +76,13 @@ public class OrderItem {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public BigDecimal getLineTotal() {
+        return lineTotal;
+    }
+
+    public void setLineTotal(BigDecimal lineTotal) {
+        this.lineTotal = lineTotal;
     }
 }

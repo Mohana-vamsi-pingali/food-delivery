@@ -40,7 +40,7 @@ public class CartService {
     }
 
     @Transactional
-    public AddCartItemDTO addCartItem(AddCartItemDTO dto){
+    public Long addCartItem(AddCartItemDTO dto){
         Long userId = authUtils.currentUserId();
         RestaurantMenu menuEntry = restaurantMenuRepository.findById(dto.getMenuItemId()).orElseThrow(()->new IllegalArgumentException("Cannot Find Restaurant Menu Item"));
         if(isItemExists(menuEntry)) {
@@ -61,9 +61,9 @@ public class CartService {
             newCartItem.setQuantity(dto.getQuantity());
             newCartItem.setRestaurantMenu(menuEntry);
             newCartItem = cartItemRepository.save(newCartItem);
-            return new AddCartItemDTO(newCartItem.getId(), newCartItem.getQuantity());
+            return c.getId();
         }
-        return new AddCartItemDTO(null, -1);
+        return Long.getLong("-1");
     }
 
     public String changeQuantity(Long id, boolean shouldIncrease){
