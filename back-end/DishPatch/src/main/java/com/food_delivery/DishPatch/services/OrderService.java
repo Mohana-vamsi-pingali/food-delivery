@@ -38,6 +38,9 @@ public class OrderService {
     private RestaurantMenuService restaurantMenuService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     private AuthUtils authUtils;
 
     @Transactional(readOnly = true)
@@ -108,7 +111,7 @@ public class OrderService {
 
         c.setStatus(Cart.Status.CHECKED_OUT);
         cartRepository.save(c);
-
+        notificationService.sendOrderNotification(order.getRestaurant().getId(), order);
         return "Order Placed";
 
     }
