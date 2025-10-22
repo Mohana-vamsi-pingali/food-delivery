@@ -115,4 +115,11 @@ public class OrderService {
         return "Order Placed";
 
     }
+
+    public String acceptOrder(Long id, boolean accept){
+        Order o = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot Find Order"));
+        o.setOrderStatus(accept ? Order.OrderStatus.PREPARING: Order.OrderStatus.REJECTED);
+        orderRepository.save(o);
+        return accept ? "Order Accepted" : "Order Rejected";
+    }
 }

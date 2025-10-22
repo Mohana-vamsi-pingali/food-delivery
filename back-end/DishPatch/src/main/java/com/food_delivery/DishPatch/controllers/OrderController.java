@@ -24,4 +24,10 @@ public class OrderController {
         String response = orderService.placeOrder(id);
         return ResponseEntity.ok(new ApiResponse((response)));
     }
+
+    @PostMapping("/accept")
+    public ResponseEntity<ApiResponse> acceptOrder(@RequestParam Long id, @RequestParam boolean accept){
+        String response = orderService.acceptOrder(id, accept);
+        return ResponseEntity.ok(new ApiResponse((response)));
+    }
 }
